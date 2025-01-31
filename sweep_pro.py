@@ -65,9 +65,7 @@ def main():
     print(colored("\n[+] Completed", "green"))
     print(colored(f"[+] Live hosts:\n\n", "green"))
     for host in live_hosts:
-        print(colored(f"{host}", "green"))
-
-
+        print(colored(f"--> {host}", "green"))
 
 
 if __name__=="__main__":

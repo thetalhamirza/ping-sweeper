@@ -2,6 +2,10 @@ import sys
 import os
 from scapy.all import ICMP, IP, sr1
 from netaddr import IPNetwork
+from colorama import init
+from termcolor import colored
+
+init()
 
 def ping_sweep(network, netmask):
     live_hosts = []
@@ -14,18 +18,18 @@ def ping_sweep(network, netmask):
 
     for host in ip_network.iter_hosts():
         scanned_hosts += 1
-        print(f"Scanning: {scanned_hosts}/{total_hosts}", end="\r")
+        print(f"[+] Scanning: {scanned_hosts}/{total_hosts}", end="\r")
         response = sr1(IP(dst=str(host))/ICMP(), timeout=1, verbose=0)
         if response is not None:
             live_hosts.append(str(host))
-            print(f"Host {host} is online.")
+            print(f"[+] Host {host} is online.")
 
     return live_hosts
 
 
 def main():
     if os.geteuid() != 0:       # checking root
-        print("This script requires root privileges.")
+        print("[!] This script requires root privileges.")
         sys.exit(1)
 
 
@@ -33,8 +37,10 @@ def main():
     netmask = sys.argv[2]
 
     live_hosts = ping_sweep(network, netmask)
-    print("Completed\n")
-    print(f"Live hosts: {live_hosts}")
+    print(colored("\n[+] Completed", "green"))
+    print(colored(f"[+] Live hosts:\n\n", "green"))
+    for host in live_hosts:
+        print(colored(f"--> {host}", "green"))
 
 
 if __name__=="__main__":
