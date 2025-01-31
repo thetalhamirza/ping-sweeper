@@ -4,6 +4,10 @@ from scapy.all import ICMP, IP, sr1
 from netaddr import IPNetwork
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from colorama import init
+from termcolor import colored
+
+init()
 
 def ping_host(host):
     response = sr1(IP(dst=str(host))/ICMP(), timeout=1, verbose=0)      
@@ -14,11 +18,11 @@ def ping_sweep(network, netmask, max_threads):
     ip_network = IPNetwork(network + '/' + netmask)
     hosts = list(ip_network.iter_hosts())
 
-    print(f"Number of threads: {max_threads}")
+    print(colored(f"[+] Number of threads: {max_threads}", "light_blue"))
 
-    print(f"Scanning {len(hosts)} hosts...")
+    print(colored(f"[+] Scanning {len(hosts)} hosts...", "light_blue"))
 
-    with ThreadPoolExecutor(max_threads=50) as executor:
+    with ThreadPoolExecutor(max_threads) as executor:
         future_to_host = {executor.submit(ping_host, host): host for host in hosts}
         for i,future in enumerate(as_completed(future_to_host)):
             host = future_to_host[future]
@@ -26,16 +30,16 @@ def ping_sweep(network, netmask, max_threads):
                 result = future.result()
                 if result:
                     live_hosts.append(result)
-                    print(f"Host {host} is online.")
+                    print(colored(f"[+] Host {host} is online.", "light_green"))
             except Exception as e:
-                print(f"Error scanning host {host}: {e}")
-            print(f"Scanned: {i+1}/{len(hosts)}", end="\r", flush=True)
+                print(colored(f"[!] Error scanning host {host}: {e}", "red"))
+            print(colored(f"[+] Scanned: {i+1}/{len(hosts)}", "dark_grey"), end="\r", flush=True)
 
     return live_hosts
 
 def main():
     if os.geteuid() != 0:       # checking root
-        print("This script requires root privileges.")
+        print("[!] This script requires root privileges.")
         sys.exit(1)
 
 
@@ -54,12 +58,12 @@ def main():
             if max_threads < 1:
                 raise ValueError
         except ValueError:
-            print("Error: Number of threads must be a positive integer.")
+            print("[!] Error: Number of threads must be a positive integer.")
             sys.exit(1)
 
     live_hosts = ping_sweep(network, netmask, max_threads)
-    print("\nCompleted")
-    print(f"Live hosts: {live_hosts}")
+    print(colored("\n[+] Completed", "green"))
+    print(colored(f"[+] Live hosts: {live_hosts}", "green"))
 
 
 
