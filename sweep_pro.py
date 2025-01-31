@@ -33,7 +33,7 @@ def ping_sweep(network, netmask, max_threads):
                     print(colored(f"[+] Host {host} is online.", "light_green"))
             except Exception as e:
                 print(colored(f"[!] Error scanning host {host}: {e}", "red"))
-            print(colored(f"[+] Scanned: {i+1}/{len(hosts)}", "dark_grey"), end="\r", flush=True)
+            print(f"[+] Scanned: {i+1}/{len(hosts)}", end="\r", flush=True)
 
     return live_hosts
 
@@ -63,9 +63,9 @@ def main():
 
     live_hosts = ping_sweep(network, netmask, max_threads)
     print(colored("\n[+] Completed", "green"))
-    print(colored(f"[+] Live hosts: {live_hosts}", "green"))
-
-
+    print(colored(f"[+] Live hosts:\n\n", "green"))
+    for host in live_hosts:
+        print(colored(f"{host}", "green"))
 
 
 
