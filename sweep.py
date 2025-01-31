@@ -1,4 +1,5 @@
 import sys
+import os
 from scapy.all import ICMP, IP, sr1
 from netaddr import IPNetwork
 
@@ -23,6 +24,11 @@ def ping_sweep(network, netmask):
 
 
 def main():
+    if os.geteuid() != 0:       # checking root
+        print("This script requires root privileges.")
+        sys.exit(1)
+
+
     network = sys.argv[1]
     netmask = sys.argv[2]
 
