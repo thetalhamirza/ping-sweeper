@@ -1,4 +1,4 @@
-# Ping Sweeper Scripts
+# Ping Sweeper
 
 This repository contains two Python scripts for performing a ping sweep to identify live hosts on a network.
 
