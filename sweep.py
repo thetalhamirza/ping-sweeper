@@ -1,5 +1,7 @@
 import sys
 import os
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import ICMP, IP, sr1
 from netaddr import IPNetwork
 from colorama import init

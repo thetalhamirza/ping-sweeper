@@ -1,5 +1,7 @@
 import sys
 import os
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)          # to disable MAC error messages
 from scapy.all import ICMP, IP, sr1
 from netaddr import IPNetwork
 import threading
