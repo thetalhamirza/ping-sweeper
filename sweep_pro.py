@@ -64,7 +64,7 @@ def main():
             sys.exit(1)
 
     live_hosts = ping_sweep(network, netmask, max_threads)
-    print(colored("\n\n[+] Completed", "green"))
+    print(colored("\n[+] Completed", "green"))
     print(colored(f"\n\n[+] Live hosts:\n\n", "green"))
     for host in live_hosts:
         print(colored(f"--> {host}", "green"))
