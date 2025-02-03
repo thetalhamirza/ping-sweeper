@@ -20,9 +20,9 @@ def ping_sweep(network, netmask, max_threads):
     ip_network = IPNetwork(network + '/' + netmask)
     hosts = list(ip_network.iter_hosts())
 
-    print(colored(f"[+] Number of threads: {max_threads}", "light_blue"))
+    print(colored(f"\n\n[+] Number of threads: {max_threads}", "light_blue"))
 
-    print(colored(f"[+] Scanning {len(hosts)} hosts...", "light_blue"))
+    print(colored(f"\n[+] Scanning {len(hosts)} hosts...", "light_blue"))
 
     with ThreadPoolExecutor(max_threads) as executor:
         future_to_host = {executor.submit(ping_host, host): host for host in hosts}
@@ -64,8 +64,8 @@ def main():
             sys.exit(1)
 
     live_hosts = ping_sweep(network, netmask, max_threads)
-    print(colored("\n[+] Completed", "green"))
-    print(colored(f"[+] Live hosts:\n\n", "green"))
+    print(colored("\n\n[+] Completed", "green"))
+    print(colored(f"\n\n[+] Live hosts:\n\n", "green"))
     for host in live_hosts:
         print(colored(f"--> {host}", "green"))
 
