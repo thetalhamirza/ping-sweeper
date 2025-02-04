@@ -1,7 +1,5 @@
 # Ping Sweeper
 
-## Overview
-
 A Python-based network scanning tool that detects active hosts within a given subnet using **ICMP ping requests**. It is designed for **fast and efficient scanning** using **multithreading**, making it useful for network reconnaissance and security assessments.
 
 ## Features
